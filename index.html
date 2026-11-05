@@ -495,6 +495,78 @@
       display: none;
     }
 
+    /* Galeria recolhida com degradê + "Ver mais" */
+    .portfolio-wrapper {
+      position: relative;
+      overflow: hidden;
+      transition: max-height 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .portfolio-wrapper::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 220px;
+      background: linear-gradient(to bottom, rgba(251, 249, 246, 0) 0%, rgba(251, 249, 246, 0.85) 55%, var(--bg-light) 100%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .portfolio-wrapper.collapsed::after {
+      opacity: 1;
+    }
+
+    .portfolio-more {
+      display: flex;
+      justify-content: center;
+      margin-top: -30px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .portfolio-wrapper:not(.collapsed) + .portfolio-more {
+      margin-top: 30px;
+    }
+
+    .portfolio-more[hidden] {
+      display: none;
+    }
+
+    .btn-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--gold-accent);
+      color: #ffffff;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 30px;
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(197, 160, 89, 0.35);
+      transition: var(--transition);
+    }
+
+    .btn-more:hover {
+      background: var(--gold-hover);
+      transform: translateY(-2px);
+    }
+
+    .btn-more i {
+      transition: transform 0.3s ease;
+    }
+
+    .portfolio-wrapper:not(.collapsed) + .portfolio-more .btn-more i {
+      transform: rotate(180deg);
+    }
+
     /* ==========================================
        6. MODAL LIGHTBOX
        ========================================== */
@@ -596,6 +668,42 @@
       color: var(--gold-accent);
     }
 
+    .testimonial-source {
+      display: block;
+      margin-top: 6px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .testimonial-source i {
+      font-size: 0.75rem;
+      margin: 0 4px 0 0;
+    }
+
+    .google-rating {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .google-rating .fa-google {
+      color: var(--text-main);
+      font-size: 1.1rem;
+    }
+
+    .google-rating .stars {
+      color: var(--gold-accent);
+      letter-spacing: 2px;
+    }
+
+    .testimonials-cta {
+      text-align: center;
+      margin-top: 35px;
+    }
+
     .location-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -614,6 +722,50 @@
       font-size: 1.2rem;
       color: var(--gold-accent);
       margin-top: 4px;
+    }
+
+    .info-item a {
+      color: inherit;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .info-item a:hover {
+      color: var(--gold-accent);
+    }
+
+    .location-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .location-actions .btn-primary,
+    .location-actions .btn-secondary {
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .location-actions .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--text-main);
+      border-color: var(--text-main);
+    }
+
+    @media (min-width: 768px) {
+      .location-actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+
+      .location-actions .btn-primary,
+      .location-actions .btn-secondary {
+        width: auto;
+      }
     }
 
     .map-container {
@@ -894,6 +1046,11 @@
         padding-bottom: 0;
       }
 
+      /* No computador o banner ocupa a tela inteira (sem faixa clara embaixo) */
+      .hero {
+        min-height: 100vh;
+      }
+
       .menu-toggle {
         display: none;
       }
@@ -901,6 +1058,7 @@
       nav {
         position: static;
         width: auto;
+        max-width: none;
         height: auto;
         padding: 0;
         box-shadow: none;
@@ -1042,8 +1200,8 @@
             class="btn-primary" style="margin-top: 10px;">Falar Conosco</a>
         </div>
         <div class="about-images">
-          <img src="img/Arranjos.jpg"
-            alt="Decoração La Rose" class="about-img-main" loading="lazy">
+          <img src="img/debutante-vestido-branco-renda-mesa-bolo-orquideas-23.jpg"
+            alt="Debutante em vestido branco de renda junto à mesa de bolo com orquídeas suspensas - La Rose Decorações" class="about-img-main" loading="lazy">
         </div>
       </div>
     </div>
@@ -1096,53 +1254,368 @@
         <button class="filter-btn" data-filter="casamentos">Casamentos</button>
         <button class="filter-btn" data-filter="15anos">15 Anos</button>
         <button class="filter-btn" data-filter="arranjos">Arranjos</button>
-        <button class="filter-btn" data-filter="noivos">Noivos</button>
       </div>
 
+      <div class="portfolio-wrapper collapsed" id="portfolioWrapper">
       <div class="portfolio-grid">
         <div class="portfolio-item casamentos reveal delay-1"
-          onclick="openLightbox('img/Lavinia e Felipe.jpg', 'Lavínia e Felipe', 'Lustres de Cristal & Espelhos')">
-          <img src="img/Lavinia e Felipe.jpg"
-            alt="Lavínia e Felipe" loading="lazy">
+          onclick="openLightbox('img/altar-mesa-provencal-branca-arco-gipsofila-33.jpg', 'Altar com mesa provençal branca e arcos de gipsofila', 'Mesa provençal branca sobre palco redondo entre arcos de gipsofila, passarela branca e cadeiras de cristal ao ar livre')">
+          <img src="img/altar-mesa-provencal-branca-arco-gipsofila-33.jpg"
+            alt="Mesa provençal branca sobre palco redondo entre arcos de gipsofila, passarela branca e cadeiras de cristal ao ar livre" title="Altar com mesa provençal branca e arcos de gipsofila" loading="lazy">
           <div class="portfolio-overlay">
             <span class="category-badge">Casamento</span>
-            <h4>Lavínia e Felipe</h4>
-            <p>Entrega de Luzes Imersivas</p>
+            <h4>Altar Provençal</h4>
+            <p>Arcos de Gipsofila</p>
           </div>
         </div>
 
-        <div class="portfolio-item casamentos arranjos reveal delay-2"
-          onclick="openLightbox('img/Flavia e Danilo.jpg', 'Flávia e Danilo', 'Passarela Cênica')">
-          <img src="img/Flavia e Danilo.jpg"
-            alt="Flávia e Danilo" loading="lazy">
+        <div class="portfolio-item 15anos reveal delay-2"
+          onclick="openLightbox('img/retrato-debutante-tiara-vestido-rose-14.jpg', 'Retrato de debutante com tiara e vestido rosé', 'Debutante sorrindo com tiara de cristais e vestido rosé de mangas bufantes, mesa de doces florida ao fundo')">
+          <img src="img/retrato-debutante-tiara-vestido-rose-14.jpg"
+            alt="Debutante sorrindo com tiara de cristais e vestido rosé de mangas bufantes, mesa de doces florida ao fundo" title="Retrato de debutante com tiara e vestido rosé" loading="lazy">
           <div class="portfolio-overlay">
-            <span class="category-badge">Casamento</span>
-            <h4>Flávia e Danilo</h4>
-            <p>Passarela Ao Ar Livre</p>
+            <span class="category-badge">15 Anos</span>
+            <h4>Debutante</h4>
+            <p>Tiara & Vestido Rosé</p>
           </div>
         </div>
 
-        <div class="portfolio-item casamentos reveal delay-3"
-          onclick="openLightbox('img/Anny e Juliano.jpg', 'Anny e Juliano', 'Estrutura Aérea')">
-          <img src="img/Anny e Juliano.jpg"
-            alt="Anny e Juliano" loading="lazy">
+        <div class="portfolio-item casamentos arranjos reveal delay-3"
+          onclick="openLightbox('img/mesa-bolo-arranjo-suspenso-floral-rose-marsala-02.jpg', 'Mesa de bolo com arranjo floral suspenso em tons rosé e marsala', 'Bolo branco de cinco andares sob arranjo floral suspenso em rosé e marsala, com luminárias pendentes e pedestais de acrílico')">
+          <img src="img/mesa-bolo-arranjo-suspenso-floral-rose-marsala-02.jpg"
+            alt="Bolo branco de cinco andares sob arranjo floral suspenso em rosé e marsala, com luminárias pendentes e pedestais de acrílico" title="Mesa de bolo com arranjo floral suspenso em tons rosé e marsala" loading="lazy">
           <div class="portfolio-overlay">
-            <span class="category-badge">Casamento</span>
-            <h4>Anny e Juliano</h4>
-            <p>Casamento</p>
+            <span class="category-badge">Mesa de Bolo</span>
+            <h4>Floral Suspenso</h4>
+            <p>Rosé & Marsala</p>
           </div>
         </div>
 
         <div class="portfolio-item casamentos reveal"
-          onclick="openLightbox('img/Leonardo e Beatriz.jpg', 'Beatriz & Leonardo', 'Show de Fogos')">
-          <img src="img/Leonardo e Beatriz.jpg"
-            alt="Beatriz e Leonardo" loading="lazy">
+          onclick="openLightbox('img/noiva-vestido-cetim-lustre-cristal-mesa-bolo-25.jpg', 'Noiva em vestido de cetim sob lustre de cristal', 'Noiva com vestido de cetim ombro a ombro e buquê de rosas brancas, sob lustre de cristal e diante da mesa de bolo')">
+          <img src="img/noiva-vestido-cetim-lustre-cristal-mesa-bolo-25.jpg"
+            alt="Noiva com vestido de cetim ombro a ombro e buquê de rosas brancas, sob lustre de cristal e diante da mesa de bolo" title="Noiva em vestido de cetim sob lustre de cristal" loading="lazy">
           <div class="portfolio-overlay">
-            <span class="category-badge">Recepção</span>
-            <h4>Beatriz & Leonardo</h4>
-            <p>Efeitos Cênicos</p>
+            <span class="category-badge">Noiva</span>
+            <h4>Clássico Atemporal</h4>
+            <p>Lustre de Cristal</p>
           </div>
         </div>
+
+        <div class="portfolio-item 15anos reveal delay-1"
+          onclick="openLightbox('img/estrutura-roxa-baloes-prata-mesa-15-anos-22.jpg', 'Estrutura roxa com balões prata e mesa de 15 anos', 'Estrutura roxa com arcos de balões prata, balões lilás suspensos e mesa de bolo de 15 anos com cerejeira ao fundo')">
+          <img src="img/estrutura-roxa-baloes-prata-mesa-15-anos-22.jpg"
+            alt="Estrutura roxa com arcos de balões prata, balões lilás suspensos e mesa de bolo de 15 anos com cerejeira ao fundo" title="Estrutura roxa com balões prata e mesa de 15 anos" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">15 Anos</span>
+            <h4>Lilás & Prata</h4>
+            <p>Arco de Balões</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item casamentos reveal delay-2"
+          onclick="openLightbox('img/cerimonia-arcos-gipsofila-passarela-espelhada-20.jpg', 'Cerimônia com arcos de gipsofila e passarela espelhada', 'Corredor espelhado ladeado por gipsofila levando a altar com arcos de flores brancas sob grande árvore e varal de luzes')">
+          <img src="img/cerimonia-arcos-gipsofila-passarela-espelhada-20.jpg"
+            alt="Corredor espelhado ladeado por gipsofila levando a altar com arcos de flores brancas sob grande árvore e varal de luzes" title="Cerimônia com arcos de gipsofila e passarela espelhada" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">Casamento</span>
+            <h4>Passarela Espelhada</h4>
+            <p>Arcos de Gipsofila</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item 15anos reveal delay-3"
+          onclick="openLightbox('img/debutante-vestido-estampa-floral-mesa-bolo-08.jpg', 'Debutante de costas em vestido com estampa floral', 'Debutante de costas olhando para trás, vestido rosé com saia de rosas estampadas, diante da mesa de bolo florida')">
+          <img src="img/debutante-vestido-estampa-floral-mesa-bolo-08.jpg"
+            alt="Debutante de costas olhando para trás, vestido rosé com saia de rosas estampadas, diante da mesa de bolo florida" title="Debutante de costas em vestido com estampa floral" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">15 Anos</span>
+            <h4>Vestido Floral</h4>
+            <p>Mesa de Bolo Florida</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item casamentos arranjos reveal"
+          onclick="openLightbox('img/mesa-bolo-lustres-cristal-orquideas-brancas-03.jpg', 'Mesa de bolo com lustres de cristal e orquídeas brancas', 'Três lustres de cristal com orquídeas brancas sobre mesa espelhada com bolo branco e vasos de flores, cortina bege ao fundo')">
+          <img src="img/mesa-bolo-lustres-cristal-orquideas-brancas-03.jpg"
+            alt="Três lustres de cristal com orquídeas brancas sobre mesa espelhada com bolo branco e vasos de flores, cortina bege ao fundo" title="Mesa de bolo com lustres de cristal e orquídeas brancas" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">Mesa de Bolo</span>
+            <h4>Lustres de Cristal</h4>
+            <p>Orquídeas Brancas</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item reveal delay-1"
+          onclick="openLightbox('img/fogos-artificio-casal-pergolado-floral-noite-29.jpg', 'Fogos de artifício sobre o casal no pergolado floral', 'Casal abraçado de costas assistindo a fogos de artifício sob varal de luzes, diante de pergolado com orquídeas')">
+          <img src="img/fogos-artificio-casal-pergolado-floral-noite-29.jpg"
+            alt="Casal abraçado de costas assistindo a fogos de artifício sob varal de luzes, diante de pergolado com orquídeas" title="Fogos de artifício sobre o casal no pergolado floral" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">Efeitos Cênicos</span>
+            <h4>Show de Fogos</h4>
+            <p>Pergolado Floral</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item 15anos reveal delay-2"
+          onclick="openLightbox('img/debutante-vestido-pink-globos-espelhados-baloes-11.jpg', 'Debutante de vestido pink com globos espelhados e balões', 'Debutante em vestido pink com babados diante de mesa com globos espelhados, balões lilás e cortina de cristais')">
+          <img src="img/debutante-vestido-pink-globos-espelhados-baloes-11.jpg"
+            alt="Debutante em vestido pink com babados diante de mesa com globos espelhados, balões lilás e cortina de cristais" title="Debutante de vestido pink com globos espelhados e balões" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">15 Anos</span>
+            <h4>Pink & Prata</h4>
+            <p>Globos Espelhados</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item casamentos reveal delay-3"
+          onclick="openLightbox('img/entrada-cerimonia-portas-brancas-corredor-floral-16.jpg', 'Portas brancas na entrada da cerimônia ao ar livre', 'Portas brancas abertas revelando corredor com flores brancas e azuis até o altar, entre cadeiras brancas sob tenda')">
+          <img src="img/entrada-cerimonia-portas-brancas-corredor-floral-16.jpg"
+            alt="Portas brancas abertas revelando corredor com flores brancas e azuis até o altar, entre cadeiras brancas sob tenda" title="Portas brancas na entrada da cerimônia ao ar livre" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">Casamento</span>
+            <h4>Portas Cenográficas</h4>
+            <p>Entrada da Noiva</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item casamentos arranjos reveal"
+          onclick="openLightbox('img/mesa-posta-casamento-ao-ar-livre-sousplat-dourado-01.jpg', 'Mesa posta ao ar livre com sousplat dourado e arranjo branco', 'Mesa redonda com toalha branca, sousplat dourado, taças de cristal e arranjo de rosas brancas em área externa com palmeiras')">
+          <img src="img/mesa-posta-casamento-ao-ar-livre-sousplat-dourado-01.jpg"
+            alt="Mesa redonda com toalha branca, sousplat dourado, taças de cristal e arranjo de rosas brancas em área externa com palmeiras" title="Mesa posta ao ar livre com sousplat dourado e arranjo branco" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">Mesa Posta</span>
+            <h4>Branco & Dourado</h4>
+            <p>Sousplat Dourado ao Ar Livre</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item 15anos reveal delay-1"
+          onclick="openLightbox('img/debutante-girando-vestido-floral-luz-roxa-18.jpg', 'Debutante girando o vestido floral sob luz roxa', 'Debutante girando em vestido roxo com saia de flores, diante de mesa de bolo com cerejeira e lustres')">
+          <img src="img/debutante-girando-vestido-floral-luz-roxa-18.jpg"
+            alt="Debutante girando em vestido roxo com saia de flores, diante de mesa de bolo com cerejeira e lustres" title="Debutante girando o vestido floral sob luz roxa" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">15 Anos</span>
+            <h4>Debutante</h4>
+            <p>Cerejeira & Luz Roxa</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item casamentos reveal delay-2"
+          onclick="openLightbox('img/noiva-costas-corredor-espelhado-painel-flores-30.jpg', 'Noiva de costas em corredor espelhado com painel de flores', 'Noiva de costas com vestido de renda e cauda longa em corredor espelhado, diante de painel de flores brancas e lustres')">
+          <img src="img/noiva-costas-corredor-espelhado-painel-flores-30.jpg"
+            alt="Noiva de costas com vestido de renda e cauda longa em corredor espelhado, diante de painel de flores brancas e lustres" title="Noiva de costas em corredor espelhado com painel de flores" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">Noiva</span>
+            <h4>Corredor Espelhado</h4>
+            <p>Painel de Flores</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item 15anos reveal delay-3"
+          onclick="openLightbox('img/bolo-15-anos-roxo-glitter-globo-espelhado-13.jpg', 'Bolo de 15 anos roxo com glitter e globo espelhado', 'Bolo roxo com glitter e globo espelhado no meio, sobre mesa espelhada entre arranjos de flores e balões')">
+          <img src="img/bolo-15-anos-roxo-glitter-globo-espelhado-13.jpg"
+            alt="Bolo roxo com glitter e globo espelhado no meio, sobre mesa espelhada entre arranjos de flores e balões" title="Bolo de 15 anos roxo com glitter e globo espelhado" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">15 Anos</span>
+            <h4>Bolo Disco</h4>
+            <p>Glitter & Globo Espelhado</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item casamentos arranjos reveal"
+          onclick="openLightbox('img/mesa-bolo-casamento-ao-ar-livre-orquideas-brancas-17.jpg', 'Mesa de bolo ao ar livre com orquídeas brancas e cristais', 'Painel com arranjo de orquídeas brancas e cortinas de cristal sobre mesa com bolo branco, cercado de flores ao entardecer')">
+          <img src="img/mesa-bolo-casamento-ao-ar-livre-orquideas-brancas-17.jpg"
+            alt="Painel com arranjo de orquídeas brancas e cortinas de cristal sobre mesa com bolo branco, cercado de flores ao entardecer" title="Mesa de bolo ao ar livre com orquídeas brancas e cristais" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">Mesa de Bolo</span>
+            <h4>Orquídeas ao Entardecer</h4>
+            <p>Cortinas de Cristal</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item 15anos reveal delay-1"
+          onclick="openLightbox('img/debutante-vestido-dourado-pista-led-cortina-luzes-34.jpg', 'Debutante de vestido dourado em pista de LED', 'Debutante sorrindo em vestido dourado com brilho sobre pista de LED, diante de cortina de luzes e mesa de bolo rosa')">
+          <img src="img/debutante-vestido-dourado-pista-led-cortina-luzes-34.jpg"
+            alt="Debutante sorrindo em vestido dourado com brilho sobre pista de LED, diante de cortina de luzes e mesa de bolo rosa" title="Debutante de vestido dourado em pista de LED" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">15 Anos</span>
+            <h4>Noite Dourada</h4>
+            <p>Pista de LED</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item casamentos reveal delay-2"
+          onclick="openLightbox('img/cerimonia-ao-ar-livre-tenda-voil-hortensias-azuis-05.jpg', 'Altar de cerimônia ao ar livre com voil branco e hortênsias azuis', 'Altar sob tenda com cortinas de voil branco, mesa provençal, piano branco e corredor com flores brancas e hortênsias azuis')">
+          <img src="img/cerimonia-ao-ar-livre-tenda-voil-hortensias-azuis-05.jpg"
+            alt="Altar sob tenda com cortinas de voil branco, mesa provençal, piano branco e corredor com flores brancas e hortênsias azuis" title="Altar de cerimônia ao ar livre com voil branco e hortênsias azuis" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">Casamento</span>
+            <h4>Tenda com Voil</h4>
+            <p>Hortênsias Azuis</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item 15anos arranjos reveal delay-3"
+          onclick="openLightbox('img/mesa-bolo-15-anos-flores-rosa-iluminacao-lilas-07.jpg', 'Mesa de bolo de 15 anos com flores rosa e luz lilás', 'Bolo branco com flores de açúcar rosa entre grandes arranjos de rosas e lírios, lustres de cristal e iluminação lilás')">
+          <img src="img/mesa-bolo-15-anos-flores-rosa-iluminacao-lilas-07.jpg"
+            alt="Bolo branco com flores de açúcar rosa entre grandes arranjos de rosas e lírios, lustres de cristal e iluminação lilás" title="Mesa de bolo de 15 anos com flores rosa e luz lilás" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">15 Anos</span>
+            <h4>Mesa de Bolo Rosa</h4>
+            <p>Iluminação Lilás</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item casamentos reveal"
+          onclick="openLightbox('img/noiva-capela-branca-arco-gipsofila-fazenda-31.jpg', 'Noiva na capela branca com arco de gipsofila', 'Noiva de costas com vestido tomara que caia em porta de capela branca decorada com arco de gipsofila, na fazenda')">
+          <img src="img/noiva-capela-branca-arco-gipsofila-fazenda-31.jpg"
+            alt="Noiva de costas com vestido tomara que caia em porta de capela branca decorada com arco de gipsofila, na fazenda" title="Noiva na capela branca com arco de gipsofila" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">Noiva</span>
+            <h4>Capela na Fazenda</h4>
+            <p>Arco de Gipsofila</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item 15anos arranjos reveal delay-1"
+          onclick="openLightbox('img/lounge-mesas-bistro-banquetas-off-white-flores-lilas-12.jpg', 'Lounge com mesas bistrô e banquetas off-white', 'Mesas bistrô pretas de arame e tampo de vidro com banquetas off-white e vasos de flores lilás em salão de festas')">
+          <img src="img/lounge-mesas-bistro-banquetas-off-white-flores-lilas-12.jpg"
+            alt="Mesas bistrô pretas de arame e tampo de vidro com banquetas off-white e vasos de flores lilás em salão de festas" title="Lounge com mesas bistrô e banquetas off-white" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">Ambientação</span>
+            <h4>Lounge Bistrô</h4>
+            <p>Flores Lilás</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item casamentos reveal delay-2"
+          onclick="openLightbox('img/teto-floral-branco-mesa-espelhada-bolo-salao-15.jpg', 'Teto floral branco sobre mesa espelhada com bolo', 'Teto de flores brancas com cortinas de cristal sobre mesa espelhada com bolo branco e arranjos verdes e brancos')">
+          <img src="img/teto-floral-branco-mesa-espelhada-bolo-salao-15.jpg"
+            alt="Teto de flores brancas com cortinas de cristal sobre mesa espelhada com bolo branco e arranjos verdes e brancos" title="Teto floral branco sobre mesa espelhada com bolo" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">Casamento</span>
+            <h4>Teto Floral</h4>
+            <p>Mesa Espelhada</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item casamentos reveal delay-1"
+          onclick="openLightbox('img/debutante-vestido-branco-renda-mesa-bolo-orquideas-23.jpg', 'Debutante de vestido branco de renda junto à mesa de bolo', 'Debutante em vestido branco de renda apoiada em mesa de vidro com base dourada, bolo branco e orquídeas suspensas')">
+          <img src="img/debutante-vestido-branco-renda-mesa-bolo-orquideas-23.jpg"
+            alt="Debutante em vestido branco de renda apoiada em mesa de vidro com base dourada, bolo branco e orquídeas suspensas" title="Debutante de vestido branco de renda junto à mesa de bolo" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">Casamento</span>
+            <h4>Jardim Suspenso</h4>
+            <p>Vestido de Renda</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item arranjos reveal"
+          onclick="openLightbox('img/decoracao-piscina-guarda-chuva-transparente-flores-04.jpg', 'Guarda-chuvas transparentes com flores flutuando na piscina', 'Guarda-chuvas transparentes invertidos com arranjos de margaridas brancas e folhagens flutuando em piscina')">
+          <img src="img/decoracao-piscina-guarda-chuva-transparente-flores-04.jpg"
+            alt="Guarda-chuvas transparentes invertidos com arranjos de margaridas brancas e folhagens flutuando em piscina" title="Guarda-chuvas transparentes com flores flutuando na piscina" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">Arranjos</span>
+            <h4>Piscina Florida</h4>
+            <p>Guarda-chuvas com Flores</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item casamentos reveal delay-1"
+          onclick="openLightbox('img/vista-cerimonia-ao-ar-livre-voil-corredor-gipsofila-26.jpg', 'Cerimônia ao ar livre vista entre cortinas de voil', 'Corredor branco com bordas de gipsofila até altar com arco floral, emoldurado por cortinas de voil e céu azul')">
+          <img src="img/vista-cerimonia-ao-ar-livre-voil-corredor-gipsofila-26.jpg"
+            alt="Corredor branco com bordas de gipsofila até altar com arco floral, emoldurado por cortinas de voil e céu azul" title="Cerimônia ao ar livre vista entre cortinas de voil" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">Casamento</span>
+            <h4>Cerimônia de Dia</h4>
+            <p>Voil & Gipsofila</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item 15anos arranjos reveal delay-2"
+          onclick="openLightbox('img/mesa-vidro-guardanapo-lilas-salao-festas-10.jpg', 'Mesa de vidro com guardanapos lilás em salão de festas', 'Mesa redonda de vidro com pratos brancos, guardanapos lilás e vaso de flores roxas, mesas com toalha roxa ao fundo')">
+          <img src="img/mesa-vidro-guardanapo-lilas-salao-festas-10.jpg"
+            alt="Mesa redonda de vidro com pratos brancos, guardanapos lilás e vaso de flores roxas, mesas com toalha roxa ao fundo" title="Mesa de vidro com guardanapos lilás em salão de festas" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">Mesa Posta</span>
+            <h4>Tons de Lilás</h4>
+            <p>Mesa de Vidro</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item casamentos reveal delay-1"
+          onclick="openLightbox('img/retrato-debutante-acompanhante-arranjo-suspenso-24.jpg', 'Retrato de debutante e acompanhante sob arranjo suspenso', 'Jovem de vestido branco de renda em pé ao lado de jovem de terno azul-marinho sentado, sob arranjo suspenso de orquídeas')">
+          <img src="img/retrato-debutante-acompanhante-arranjo-suspenso-24.jpg"
+            alt="Jovem de vestido branco de renda em pé ao lado de jovem de terno azul-marinho sentado, sob arranjo suspenso de orquídeas" title="Retrato de debutante e acompanhante sob arranjo suspenso" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">Casamentos</span>
+            <h4>Debutante & Acompanhante</h4>
+            <p>Orquídeas Suspensas</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item casamentos arranjos reveal"
+          onclick="openLightbox('img/detalhe-mesa-posta-tacas-lapidadas-sousplat-dourado-21.jpg', 'Detalhe de mesa posta com taças lapidadas e sousplat dourado', 'Close de mesa branca com taças lapidadas, sousplat dourado, talheres prata e arranjo de rosas brancas e folhagens')">
+          <img src="img/detalhe-mesa-posta-tacas-lapidadas-sousplat-dourado-21.jpg"
+            alt="Close de mesa branca com taças lapidadas, sousplat dourado, talheres prata e arranjo de rosas brancas e folhagens" title="Detalhe de mesa posta com taças lapidadas e sousplat dourado" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">Mesa Posta</span>
+            <h4>Detalhes da Mesa</h4>
+            <p>Taças Lapidadas</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item casamentos reveal delay-1"
+          onclick="openLightbox('img/cerimonia-gramado-arvores-flores-brancas-entrada-27.jpg', 'Cerimônia no gramado com árvores de flores brancas', 'Duas árvores cenográficas de flores brancas na entrada de passarela branca com gipsofila e cadeiras de cristal no gramado')">
+          <img src="img/cerimonia-gramado-arvores-flores-brancas-entrada-27.jpg"
+            alt="Duas árvores cenográficas de flores brancas na entrada de passarela branca com gipsofila e cadeiras de cristal no gramado" title="Cerimônia no gramado com árvores de flores brancas" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">Casamento</span>
+            <h4>Cerimônia no Gramado</h4>
+            <p>Árvores de Flores Brancas</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item arranjos reveal delay-2"
+          onclick="openLightbox('img/mesa-convidados-toalha-champanhe-rosas-cadeira-cristal-06.jpg', 'Mesa de convidados com toalha champanhe e arranjo de rosas', 'Mesa redonda com toalha champanhe, pratos brancos, arranjo de rosas rosa e pêssego e cadeiras Napoleão de cristal')">
+          <img src="img/mesa-convidados-toalha-champanhe-rosas-cadeira-cristal-06.jpg"
+            alt="Mesa redonda com toalha champanhe, pratos brancos, arranjo de rosas rosa e pêssego e cadeiras Napoleão de cristal" title="Mesa de convidados com toalha champanhe e arranjo de rosas" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">Mesa Posta</span>
+            <h4>Toalha Champanhe</h4>
+            <p>Rosas & Cadeiras de Cristal</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item 15anos arranjos reveal delay-3"
+          onclick="openLightbox('img/bolo-branco-mesa-vidro-base-dourada-orquideas-28.jpg', 'Bolo branco em mesa de vidro com base dourada', 'Bolo branco com flores de açúcar sobre mesa de vidro com base dourada, sob teto de orquídeas e folhagens pendentes')">
+          <img src="img/bolo-branco-mesa-vidro-base-dourada-orquideas-28.jpg"
+            alt="Bolo branco com flores de açúcar sobre mesa de vidro com base dourada, sob teto de orquídeas e folhagens pendentes" title="Bolo branco em mesa de vidro com base dourada" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">Mesa de Bolo</span>
+            <h4>Base Dourada</h4>
+            <p>Orquídeas Suspensas</p>
+          </div>
+        </div>
+
+        <div class="portfolio-item arranjos reveal delay-2"
+          onclick="openLightbox('img/recepcao-ao-ar-livre-palco-coracao-led-rosa-32.jpg', 'Recepção ao ar livre com palco e painel de LED rosa', 'Mesas com vasos de alstroemérias brancas e guardanapos verdes em primeiro plano, palco com painel de LED em coração rosa ao fundo')">
+          <img src="img/recepcao-ao-ar-livre-palco-coracao-led-rosa-32.jpg"
+            alt="Mesas com vasos de alstroemérias brancas e guardanapos verdes em primeiro plano, palco com painel de LED em coração rosa ao fundo" title="Recepção ao ar livre com palco e painel de LED rosa" loading="lazy">
+          <div class="portfolio-overlay">
+            <span class="category-badge">Recepção</span>
+            <h4>Palco de LED</h4>
+            <p>Recepção ao Ar Livre</p>
+          </div>
+        </div>
+      </div>
+      </div>
+
+      <div class="portfolio-more" id="portfolioMore">
+        <button type="button" class="btn-more" id="portfolioMoreBtn" aria-expanded="false" aria-controls="portfolioWrapper">
+          <span>Ver mais eventos</span> <i class="fas fa-chevron-down"></i>
+        </button>
       </div>
 
       <div style="margin-top: 40px;">
@@ -1172,6 +1645,11 @@
       <div style="text-align: center;">
         <span class="section-tag">Depoimentos</span>
         <h2 class="section-title">O Que Dizem Nossos Clientes</h2>
+        <div class="google-rating">
+          <i class="fab fa-google"></i>
+          <span class="stars">★★★★★</span>
+          <span><strong>17 avaliações 5 estrelas</strong> no Google</span>
+        </div>
       </div>
 
       <div class="testimonials-grid">
@@ -1181,15 +1659,23 @@
           <p>"Ótimo atendimento. Comprometidos e oferece mais do que foi apresentado. Organização maravilhosa. Única
             empresa boa de eventos em São Luís."</p>
           <span class="testimonial-author">Maria Eduarda Souza</span>
+          <span class="testimonial-source"><i class="fab fa-google"></i>Avaliação no Google</span>
         </div>
 
         <div class="testimonial-card">
           <div><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-              class="fas fa-star"></i></div>
-          <p>Ótimo lugar, pessoal educado e eficiente belas vestimentas para todas as ocasiões"
-          </p>
-          <span class="testimonial-author">Brunno Bastos</span>
+              class="fas fa-star"></i><i class="fas fa-star"></i></div>
+          <p>"Lá você encontra e faz sua festa: decoração e roupas, com excelente atendimento."</p>
+          <span class="testimonial-author">Célia Maria da Silva</span>
+          <span class="testimonial-source"><i class="fab fa-google"></i>Avaliação no Google</span>
         </div>
+      </div>
+
+      <div class="testimonials-cta">
+        <a href="https://maps.app.goo.gl/mBNBMQ8FbpMbUGFz8" target="_blank" rel="noopener" class="btn-secondary"
+          style="color: var(--text-main); border-color: var(--text-main);">
+          <i class="fab fa-google"></i> Ver avaliações no Google
+        </a>
       </div>
     </div>
   </section>
@@ -1203,20 +1689,36 @@
           <h2 class="section-title">Chegue até nós</h2>
 
           <div class="info-item">
-            <i class="fas fa-phone"></i>
-            <div><strong>WhatsApp:</strong> (64) 9 9287-2934</div>
+            <i class="fas fa-map-marker-alt"></i>
+            <div><strong>Endereço:</strong> Av. Hermógenes Coelho, 1731 - Vila Boa, São Luís de Montes Belos - GO</div>
+          </div>
+
+          <div class="info-item">
+            <i class="fab fa-whatsapp"></i>
+            <div><strong>WhatsApp:</strong> <a href="https://wa.me/5564992872934" target="_blank" rel="noopener">(64) 9 9287-2934</a></div>
           </div>
 
           <div class="info-item">
             <i class="fab fa-instagram"></i>
-            <div><strong>Instagram:</strong> @larosedecoracoes</div>
+            <div><strong>Instagram:</strong> <a href="https://www.instagram.com/larosedecoracoes/" target="_blank" rel="noopener">@larosedecoracoes</a></div>
+          </div>
+
+          <div class="location-actions">
+            <a href="https://wa.me/5564992872934?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20um%20orçamento."
+              target="_blank" rel="noopener" class="btn-primary">
+              <i class="fab fa-whatsapp"></i> Falar no WhatsApp
+            </a>
+            <a href="https://www.google.com/maps/dir/?api=1&amp;destination=La%20Rose%2C%20Av.%20Herm%C3%B3genes%20Coelho%2C%201731%20-%20Vila%20Boa%2C%20S%C3%A3o%20Lu%C3%ADs%20de%20Montes%20Belos%20-%20GO"
+              target="_blank" rel="noopener" class="btn-secondary">
+              <i class="fas fa-route"></i> Como Chegar
+            </a>
           </div>
         </div>
 
         <div class="map-container">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15300.547645860304!2d-50.37920141776013!3d-16.519184295272172!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9367351515395437%3A0xe33885a553674c1!2sLa%20Rose!5e0!3m2!1spt-BR!2sbr!4v1792238721345!5m2!1spt-BR!2sbr"
-            allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin">
+          <iframe title="Mapa - La Rose Decorações"
+            src="https://maps.google.com/maps?q=La%20Rose%2C%20Av.%20Herm%C3%B3genes%20Coelho%2C%201731%20-%20Vila%20Boa%2C%20S%C3%A3o%20Lu%C3%ADs%20de%20Montes%20Belos%20-%20GO&amp;z=16&amp;hl=pt-BR&amp;output=embed"
+            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
           </iframe>
         </div>
       </div>
@@ -1348,8 +1850,50 @@
             item.classList.add('hide');
           }
         });
+        updatePortfolioHeight();
       });
     });
+
+    // Galeria recolhida: mostra 1 fileira + parte da 2ª (desktop) ou 2 fotos + parte da 3ª (celular)
+    const portfolioWrapper = document.getElementById('portfolioWrapper');
+    const portfolioMore = document.getElementById('portfolioMore');
+    const portfolioMoreBtn = document.getElementById('portfolioMoreBtn');
+
+    function updatePortfolioHeight() {
+      const visible = [...portfolioItems].filter(item => !item.classList.contains('hide'));
+      const rowTops = [...new Set(visible.map(item => item.offsetTop))].sort((a, b) => a - b);
+      const fullRows = window.innerWidth < 768 ? 2 : 1;
+
+      if (rowTops.length <= fullRows + 1) {
+        portfolioMore.hidden = true;
+        portfolioWrapper.classList.remove('collapsed');
+        portfolioWrapper.style.maxHeight = 'none';
+        return;
+      }
+
+      portfolioMore.hidden = false;
+      if (portfolioWrapper.classList.contains('collapsed')) {
+        const peek = visible[0].offsetHeight * 0.45;
+        portfolioWrapper.style.maxHeight = (rowTops[fullRows] - rowTops[0] + peek) + 'px';
+      } else {
+        portfolioWrapper.style.maxHeight = portfolioWrapper.scrollHeight + 'px';
+      }
+    }
+
+    portfolioMoreBtn.addEventListener('click', () => {
+      const expanding = portfolioWrapper.classList.contains('collapsed');
+      portfolioWrapper.classList.toggle('collapsed', !expanding);
+      portfolioMoreBtn.setAttribute('aria-expanded', expanding);
+      portfolioMoreBtn.querySelector('span').textContent = expanding ? 'Ver menos' : 'Ver mais eventos';
+      updatePortfolioHeight();
+      if (!expanding) {
+        document.getElementById('portfolio').scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+
+    window.addEventListener('resize', updatePortfolioHeight);
+    window.addEventListener('load', updatePortfolioHeight);
+    updatePortfolioHeight();
 
     // Lightbox Modal
     function openLightbox(imgSrc, title, desc) {
